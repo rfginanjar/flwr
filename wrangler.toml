@@ -1,0 +1,5 @@
+name = "your-worker-name"
+compatibility_date = "2025-10-28" # Or a recent date
+
+[site]
+bucket = "./" # Path to your Jekyll build output

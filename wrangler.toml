@@ -1,5 +1,7 @@
-name = "your-worker-name"
-compatibility_date = "2025-10-28" # Or a recent date
+name = "my-static-worker"
+main = "./index.html"
+compatibility_date = "2026-04-15"
 
-[site]
-bucket = "./" # Path to your Jekyll build output
+[assets]
+directory = "./"
+binding = "ASSETS"

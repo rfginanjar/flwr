@@ -7,266 +7,176 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Cormorant+SC:wght@300;400&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg:           #060503;
-      --sun-core:     #fffbe6;
-      --sun-mid:      #f5c01a;
-      --sun-rim:      #e07010;
-      --text-bright:  #f0d9a0;
-      --text-mid:     #a87c4a;
-      --text-dim:     #4a3018;
-      --glow-1:       rgba(240, 168, 32, 0.55);
-      --glow-2:       rgba(210, 100, 10, 0.28);
-      --glow-3:       rgba(180, 70, 5,  0.12);
+      --bg:          #060503;
+      --text-bright: #f0d9a0;
+      --text-mid:    #a87c4a;
+      --text-dim:    #4a3018;
     }
-
-    html, body {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background: var(--bg);
-    }
-
+    html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg); }
     body {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       font-family: 'Cormorant Garamond', Georgia, serif;
       color: var(--text-bright);
     }
-
-    /* grain overlay */
     body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 100;
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 100;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-      opacity: 1;
     }
-
-    /* subtle radial warmth from center */
     .bg-warmth {
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(ellipse 60% 50% at 50% 42%, rgba(80, 40, 5, 0.6) 0%, transparent 70%);
-      pointer-events: none;
+      position: fixed; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 60% 50% at 50% 42%, rgba(80,40,5,0.55) 0%, transparent 70%);
     }
-
-    /* ── SCENE ── */
     .scene {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      padding: 2rem;
-      gap: 0;
+      position: relative; display: flex; flex-direction: column;
+      align-items: center; text-align: center; padding: 2rem; gap: 0;
     }
-
-    /* ── SUN ── */
-    .sun-wrap {
-      position: relative;
-      width: 160px;
-      height: 160px;
-      margin-bottom: 3.5rem;
+    .sun-wrap { position: relative; width: 220px; height: 220px; margin-bottom: 3rem; }
+    .sunflower-svg {
+      width: 100%; height: 100%;
+      animation: breathe 6s ease-in-out infinite;
+      filter:
+        drop-shadow(0 0 18px rgba(240,158,20,0.7))
+        drop-shadow(0 0 48px rgba(200,80,5,0.38))
+        drop-shadow(0 0 90px rgba(160,50,0,0.2));
     }
-
-    .rays-ring {
-      position: absolute;
-      inset: -70px;
-      animation: spin 80s linear infinite;
-    }
-
-    .ray {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 1px;
-      transform-origin: 0 0;
-    }
-
-    /* outer corona pulse */
-    .corona {
-      position: absolute;
-      inset: -28px;
-      border-radius: 50%;
-      background: radial-gradient(circle, transparent 38%, var(--glow-2) 58%, transparent 78%);
-      animation: corona 7s ease-in-out infinite;
-    }
-
-    /* inner glow ring */
-    .halo {
-      position: absolute;
-      inset: -12px;
-      border-radius: 50%;
-      background: radial-gradient(circle, transparent 50%, var(--glow-1) 68%, transparent 84%);
-      animation: corona 5s ease-in-out infinite reverse;
-    }
-
-    /* sun body */
-    .sun {
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      background: radial-gradient(circle at 44% 38%,
-        var(--sun-core) 0%,
-        var(--sun-mid) 38%,
-        var(--sun-rim) 72%,
-        rgba(100, 30, 0, 0.4) 100%
-      );
-      box-shadow:
-        0 0 28px 12px var(--glow-1),
-        0 0 64px 28px var(--glow-2),
-        0 0 120px 60px var(--glow-3);
-      animation: breathe 5s ease-in-out infinite;
-    }
-
     @keyframes breathe {
-      0%, 100% { transform: scale(1);    opacity: .92; }
+      0%, 100% { transform: scale(1);    opacity: .88; }
       50%       { transform: scale(1.05); opacity: 1;   }
     }
-
-    @keyframes corona {
-      0%, 100% { transform: scale(1);    opacity: .5; }
-      50%       { transform: scale(1.18); opacity: 1;  }
-    }
-
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(360deg); }
-    }
-
-    /* ── TYPOGRAPHY ── */
     .title {
-      font-family: 'Cormorant SC', serif;
-      font-weight: 300;
-      font-size: clamp(3.2rem, 9vw, 5.4rem);
-      letter-spacing: 0.35em;
-      color: var(--text-bright);
-      opacity: 0;
-      animation: rise 2s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.4s;
+      font-family: 'Cormorant SC', serif; font-weight: 300;
+      font-size: clamp(3.2rem, 9vw, 5.4rem); letter-spacing: 0.35em;
+      color: var(--text-bright); opacity: 0;
+      animation: rise 2s cubic-bezier(0.16,1,0.3,1) forwards 0.4s;
     }
-
     .subtitle {
-      font-size: clamp(0.68rem, 1.8vw, 0.82rem);
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--text-mid);
-      margin-top: 0.55rem;
-      opacity: 0;
-      animation: rise 2s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.85s;
+      font-size: clamp(0.68rem, 1.8vw, 0.82rem); letter-spacing: 0.28em;
+      text-transform: uppercase; color: var(--text-mid); margin-top: 0.55rem;
+      opacity: 0; animation: rise 2s cubic-bezier(0.16,1,0.3,1) forwards 0.85s;
     }
-
     .rule {
-      width: 1px;
-      height: 48px;
+      width: 1px; height: 48px;
       background: linear-gradient(to bottom, transparent, var(--text-dim), transparent);
-      margin: 2.6rem auto;
-      opacity: 0;
+      margin: 2.6rem auto; opacity: 0;
       animation: fadein 2s ease forwards 1.4s;
     }
-
     .body {
-      font-style: italic;
-      font-weight: 300;
+      font-style: italic; font-weight: 300;
       font-size: clamp(0.95rem, 2.5vw, 1.15rem);
-      line-height: 2;
-      color: var(--text-mid);
-      max-width: 360px;
-      opacity: 0;
-      animation: rise 2s cubic-bezier(0.16, 1, 0.3, 1) forwards 1.8s;
+      line-height: 2; color: var(--text-mid); max-width: 360px;
+      opacity: 0; animation: rise 2s cubic-bezier(0.16,1,0.3,1) forwards 1.8s;
     }
-
-    .body strong {
-      font-style: normal;
-      font-weight: 400;
-      color: var(--text-bright);
-    }
-
+    .body strong { font-style: normal; font-weight: 400; color: var(--text-bright); }
     .coming {
-      font-family: 'Cormorant SC', serif;
-      font-weight: 300;
-      font-size: 0.7rem;
-      letter-spacing: 0.45em;
-      text-transform: uppercase;
-      color: var(--text-dim);
-      margin-top: 3rem;
-      opacity: 0;
-      animation: fadein 3s ease forwards 2.8s;
+      font-family: 'Cormorant SC', serif; font-weight: 300;
+      font-size: 0.7rem; letter-spacing: 0.45em; text-transform: uppercase;
+      color: var(--text-dim); margin-top: 3rem;
+      opacity: 0; animation: fadein 3s ease forwards 2.8s;
     }
-
     @keyframes rise {
       from { opacity: 0; transform: translateY(14px); }
-      to   { opacity: 1; transform: translateY(0);    }
+      to   { opacity: 1; transform: translateY(0); }
     }
-
     @keyframes fadein {
-      from { opacity: 0; }
-      to   { opacity: 1; }
+      from { opacity: 0; } to { opacity: 1; }
     }
   </style>
 </head>
 <body>
-
-  <div class="bg-warmth"></div>
-
-  <div class="scene">
-
-    <div class="sun-wrap">
-      <div class="rays-ring" id="rays"></div>
-      <div class="corona"></div>
-      <div class="halo"></div>
-      <div class="sun"></div>
-    </div>
-
-    <h1 class="title">fla[r]e</h1>
-    <p class="subtitle">A Pilgrimage &nbsp;·&nbsp; of the over-flowing sun</p>
-
-    <div class="rule"></div>
-
-    <p class="body">
-      You mistake my nature for generosity<br>
-      <strong>Photographs. Poems. Aphorisms.</strong><br>
-      I am the wound that bleeds light
-    </p>
-
-    <p class="coming soon">Coming</p>
-
+<div class="bg-warmth"></div>
+<div class="scene">
+  <div class="sun-wrap">
+    <svg class="sunflower-svg" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="pg" cx="110" cy="110" r="100" gradientUnits="userSpaceOnUse">
+          <stop offset="18%"  stop-color="#8a3200"/>
+          <stop offset="40%"  stop-color="#c86008"/>
+          <stop offset="62%"  stop-color="#e89e18"/>
+          <stop offset="80%"  stop-color="#f5c830"/>
+          <stop offset="95%"  stop-color="#fce878"/>
+          <stop offset="100%" stop-color="#fff5c0" stop-opacity="0.6"/>
+        </radialGradient>
+        <radialGradient id="pig" cx="110" cy="110" r="84" gradientUnits="userSpaceOnUse">
+          <stop offset="12%"  stop-color="#6a2600"/>
+          <stop offset="38%"  stop-color="#a84e06"/>
+          <stop offset="65%"  stop-color="#d08814"/>
+          <stop offset="90%"  stop-color="#ecb828"/>
+          <stop offset="100%" stop-color="#f8d870" stop-opacity="0.5"/>
+        </radialGradient>
+        <radialGradient id="cg" cx="44%" cy="38%">
+          <stop offset="0%"   stop-color="#4a1e04"/>
+          <stop offset="40%"  stop-color="#200c00"/>
+          <stop offset="80%"  stop-color="#0d0400"/>
+          <stop offset="100%" stop-color="#050100"/>
+        </radialGradient>
+        <radialGradient id="ag" cx="50%" cy="50%">
+          <stop offset="60%"  stop-color="transparent"/>
+          <stop offset="82%"  stop-color="rgba(220,130,10,0.07)"/>
+          <stop offset="100%" stop-color="transparent"/>
+        </radialGradient>
+      </defs>
+      <circle cx="110" cy="110" r="108" fill="url(#ag)"/>
+      <g id="petals">
+        <animateTransform attributeName="transform" type="rotate"
+          from="0 110 110" to="360 110 110" dur="120s" repeatCount="indefinite"/>
+      </g>
+      <circle cx="110" cy="110" r="30" fill="url(#cg)"/>
+      <g id="seeds" opacity="0.45"></g>
+      <ellipse cx="104" cy="104" rx="6" ry="4"
+        fill="rgba(255,210,120,0.07)" transform="rotate(-20,104,104)"/>
+    </svg>
   </div>
 
-  <script>
-    const ring = document.getElementById('rays');
-    const total = 28;
-    const size  = 300; // container is 160 + 70*2
+  <h1 class="title">fla[r]e</h1>
+  <p class="subtitle">A Pilgrimage &nbsp;·&nbsp; of the over-flowing sun</p>
+  <div class="rule"></div>
+  <p class="body">
+    You mistake my nature for generosity.<br>
+    <strong>Photographs. Poems. Aphorisms.</strong><br>
+    I am the wound that bleeds light.
+  </p>
+  <p class="coming">Coming</p>
+</div>
 
-    for (let i = 0; i < total; i++) {
-      const ray = document.createElement('div');
-      ray.className = 'ray';
-      const angle  = (i / total) * 360;
-      const len    = 72 + Math.random() * 55;
-      const op     = 0.12 + Math.random() * 0.28;
-      ray.style.cssText = `
-        height: ${len}px;
-        transform: rotate(${angle}deg) translateY(-${len}px);
-        opacity: ${op.toFixed(2)};
-        background: linear-gradient(to top,
-          transparent 0%,
-          rgba(245, 190, 30, ${(op * 1.4).toFixed(2)}) 40%,
-          rgba(255, 220, 80, ${(op * 0.8).toFixed(2)}) 70%,
-          transparent 100%
-        );
-      `;
-      ring.appendChild(ray);
+<script>
+  const ns = 'http://www.w3.org/2000/svg';
+  const petals = document.getElementById('petals');
+  const seeds  = document.getElementById('seeds');
+  const cx = 110, cy = 110;
+
+  for (let i = 0; i < 16; i++) {
+    const angle = (i / 16) * 360;
+    const el = document.createElementNS(ns, 'ellipse');
+    el.setAttribute('cx', cx); el.setAttribute('cy', cy - 58);
+    el.setAttribute('rx', 11.5); el.setAttribute('ry', 31);
+    el.setAttribute('fill', 'url(#pg)'); el.setAttribute('opacity', 0.92);
+    el.setAttribute('transform', `rotate(${angle},${cx},${cy})`);
+    petals.appendChild(el);
+  }
+
+  for (let i = 0; i < 13; i++) {
+    const angle = (i / 13) * 360 + 13.85;
+    const el = document.createElementNS(ns, 'ellipse');
+    el.setAttribute('cx', cx); el.setAttribute('cy', cy - 50);
+    el.setAttribute('rx', 9); el.setAttribute('ry', 24);
+    el.setAttribute('fill', 'url(#pig)'); el.setAttribute('opacity', 0.80);
+    el.setAttribute('transform', `rotate(${angle},${cx},${cy})`);
+    petals.appendChild(el);
+  }
+
+  [[8,11,1.4,0.55],[13,18,1.1,0.45],[21,25,0.8,0.35]].forEach(([count,r,dotR,op]) => {
+    for (let i = 0; i < count; i++) {
+      const a = (i / count) * Math.PI * 2;
+      const dot = document.createElementNS(ns, 'circle');
+      dot.setAttribute('cx', cx + Math.cos(a) * r);
+      dot.setAttribute('cy', cy + Math.sin(a) * r);
+      dot.setAttribute('r', dotR);
+      dot.setAttribute('fill', `rgba(50,15,0,${op})`);
+      seeds.appendChild(dot);
     }
-  </script>
-
+  });
+</script>
 </body>
 </html>
